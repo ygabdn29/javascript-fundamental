@@ -34,12 +34,5 @@ public class RoleServiceImpl implements RoleService{
   public Boolean delete(Integer id) {
     roleRepository.deleteById(id);
     return roleRepository.findById(id).isEmpty();
-  }
-
-  @Override
-  public User authenticate(String username, String password) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'authenticate'");
-  }
-  
+  }  
 }
