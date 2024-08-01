@@ -25,24 +25,52 @@ public class AccountController {
   @Autowired
   private EmployeeService employeeService;
 
-  @GetMapping
-  public String index(Model model) {
-    model.addAttribute("users", userService.get());
-
-    return "login/indexlogin";
-  }
+ @GetMapping("testlogin")
+    public String index(Model model, HttpSession session) {
+        // Check if user is already logged in
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser != null) {
+            model.addAttribute("user", loggedInUser);
+            return "login/welcome"; // If logged in, redirect to welcome page
+        }
+        model.addAttribute("users", userService.get());
+        return "login/login";
+    }
 
   @PostMapping("login")
-  public String login(@RequestParam String username, @RequestParam String password, Model model) {
-    User user = userService.authenticate(username, password);
-    if (user != null) {
-      model.addAttribute("user", user);
-      return "login/welcome"; // Redirect ke welcome page
-    } else {
-      model.addAttribute("error", "Invalid username or password");
-      return "login/indexlogin"; // Redirect balikin ke halaman login
+    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+        User user = userService.authenticate(username, password); // Authenticate user
+        if (user != null) {
+            session.setAttribute("user", user); // Store user in session
+            String sessionId = session.getId();
+            return "redirect:welcome/" + user.getId() + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
+        } else {
+            model.addAttribute("error", "Invalid username or password");
+            return "login/login"; // Redirect back to login page
+        }
     }
-  }
+  
+  @GetMapping("welcome/{userId}")
+    public String welcome(@PathVariable Integer userId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
+            return "redirect:testlogin";
+        }
+        model.addAttribute("user", loggedInUser);
+        return "login/welcome";
+    }
+
+  @GetMapping("session/{userId}")
+    public String getSessionId(@PathVariable Integer userId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
+            return "redirect:testlogin";
+        }
+        String sessionId = session.getId();
+        model.addAttribute("sessionId", sessionId);
+        model.addAttribute("userId", userId);
+        return "login/session";
+    }
 
   @GetMapping("role")
   public String roleIndex(Model model) {
