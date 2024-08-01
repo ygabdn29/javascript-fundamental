@@ -5,31 +5,34 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_m_user")
 public class User {
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
 
+    @Column(name = "password")
+     private String password;
+
     @Column(name = "username")
     private String username;
 
-    @Column(name = "password")
-    private String password;
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private Role role;
 
-    // @OneToOne(mappedBy = "user")
-    // private Employee employee;
-
-    public User(Integer id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+  
+    public User(Integer id, String password, String username, Role role) {
+    this.id = id;
+    this.password = password;
+    this.username = username;
+    this.role = role;
     }
 
     public Integer getId() {
@@ -40,14 +43,6 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -56,7 +51,14 @@ public class User {
         this.password = password;
     }
 
-    
+    public String getUsername() {
+        return username;
+    }
 
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
+
+
+

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,6 @@ public class AccountController {
     return "login/indexlogin";
    }
 
-
    @PostMapping("login")
    public String login(@RequestParam String username, @RequestParam String password, Model model) {
        User user = userService.authenticate(username, password);
@@ -36,3 +36,7 @@ public class AccountController {
        }
    }
 }
+
+
+  
+
