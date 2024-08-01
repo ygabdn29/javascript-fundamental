@@ -25,7 +25,6 @@ public class AccountController {
     model.addAttribute("users", userService.get());
 
     return "login/indexlogin";
-
    }
 
 
@@ -34,7 +33,6 @@ public class AccountController {
        User user = userService.authenticate(username, password);
        if (user != null) {
            model.addAttribute("user", user);
-
            return "login/welcome"; // Redirect ke welcome page
        } else {
            model.addAttribute("error", "Invalid username or password");
