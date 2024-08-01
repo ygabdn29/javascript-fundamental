@@ -11,29 +11,39 @@ import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-@Autowired
-  private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-  @Override
-  public List<User> get() {
-    return userRepository.findAll();
-  }
+    @Override
+    public List<User> get() {
+        return userRepository.findAll();
+    }
 
-  @Override
-  public User get(Integer id) {
-    return userRepository.findById(id).orElse(null);
-  }
+    @Override
+    public User get(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
 
-  @Override
-  public Boolean save(User entity) {
-    userRepository.save(entity);
-    return userRepository.findById(entity.getId()).isPresent();
-  }
+    @Override
+    public Boolean save(User entity) {
+        userRepository.save(entity);
+        return userRepository.findById(entity.getId()).isPresent();
+    }
 
-  @Override
-  public Boolean delete(Integer id) {
-    userRepository.deleteById(id);
-    return userRepository.findById(id).isEmpty();
-  }
-  
+    @Override
+    public Boolean delete(Integer id) {
+        userRepository.deleteById(id);
+        return userRepository.findById(id).isEmpty();
+    }
+
+    @Override
+    public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
+        if (!user.getPassword().equals(recentPassword)) {
+            return null; // Recent password is incorrect
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return null; // New password and confirm password do not match
+        }
+        return user; // Passwords are valid
+    }
 }

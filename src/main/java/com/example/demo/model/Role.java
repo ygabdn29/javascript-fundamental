@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_m_user")
+@Table(name = "tb_m_role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,15 @@ public class Role {
     @Column
     private String name;
 
-    public Role(Integer id, String name) {
+    @Column
+    private Integer level;
+
+    public Role(){}
+
+    public Role(Integer id, String name, Integer level) {
         this.id = id;
         this.name = name;
-    }
-
-    public Role() {
+        this.level = level;
     }
 
     public Integer getId() {
@@ -41,6 +44,17 @@ public class Role {
         this.name = name;
     }
 
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    
+
+    
     
 
 }
