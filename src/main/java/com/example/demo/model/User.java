@@ -18,23 +18,26 @@ public class User {
     private Integer id;
 
     @Column(name = "password")
-    private String password;
+     private String password;
 
     @Column(name = "username")
     private String username;
 
+
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
-
-    public User(){}
-
+    
+  
     public User(Integer id, String password, String username, Role role) {
-      this.id = id;
-      this.password = password;
-      this.username = username;
-      this.role = role;
+    this.id = id;
+    this.password = password;
+    this.username = username;
+    this.role = role;
     }
+    public User() {
+    }
+
 
     public Integer getId() {
         return id;
@@ -60,15 +63,8 @@ public class User {
         this.username = username;
     }
 
-    public Role getRole() {
-        return role;
-    }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
-  
-
+    
 }
 
 
