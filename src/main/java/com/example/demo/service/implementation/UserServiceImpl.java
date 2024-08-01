@@ -26,8 +26,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Boolean save(User entity) {
-    User user = userRepository.save(entity);
-    return user.getId().equals(null);
+    userRepository.save(entity);
+    return userRepository.findById(entity.getId()).isPresent();
   }
 
   @Override
