@@ -1,8 +1,5 @@
 package com.example.demo.model;
 
-
-import javax.persistence.Entity;
-
 import java.util.List;
 
 import javax.persistence.Column;

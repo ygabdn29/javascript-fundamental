@@ -11,10 +11,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-// import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-// import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_m_employee")
@@ -39,9 +35,9 @@ public class Employee {
     @Column
     private String phone;
 
-    // @OneToOne(mappedBy = "employee")
-    // @JsonIgnore
-    // private User user;
+    @OneToOne(mappedBy = "employee")
+    @JsonIgnore
+    private User user;
 
 
     public Employee() {
@@ -104,12 +100,12 @@ public class Employee {
         this.phone = phone;
     }
 
-    // public User getUser() {
-    //     return user;
-    // }
+    public User getUser() {
+        return user;
+    }
 
-    // public void setUser(User user) {
-    //     this.user = user;
-    // }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }
