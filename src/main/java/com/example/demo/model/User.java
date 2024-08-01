@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +27,10 @@ public class User {
   @ManyToOne
   @JoinColumn(name = "role_id", referencedColumnName = "id")
   private Role role;
+
+  @OneToOne
+  @JoinColumn(name = "id", referencedColumnName = "id")
+  private Employee employee;
 
   
   public User(){
