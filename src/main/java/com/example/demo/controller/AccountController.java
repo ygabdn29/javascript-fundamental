@@ -35,4 +35,9 @@ public class AccountController {
            return "account/login"; // Redirect balikin ke halaman login
        }
    }
+
+   @GetMapping("role")
+   public String roleIndex(){
+    
+   }
 }

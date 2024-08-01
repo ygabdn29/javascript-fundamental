@@ -23,13 +23,12 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    // @OneToOne(mappedBy = "user")
-    // private Employee employee;
 
-    public User(Integer id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+
+    public User(Integer id, String username, String password, Employee employee) {
+      this.id = id;
+      this.username = username;
+      this.password = password;
     }
 
     public Integer getId() {
@@ -55,8 +54,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    
-
 
 }
