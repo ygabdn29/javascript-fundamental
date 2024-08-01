@@ -10,12 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-// import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-// import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "tb_m_employee")
 public class Employee {
@@ -39,9 +33,9 @@ public class Employee {
     @Column
     private String phone;
 
-    // @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee")
     // @JsonIgnore
-    // private User user;
+    private User user;
 
 
     public Employee() {
