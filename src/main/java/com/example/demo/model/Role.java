@@ -1,5 +1,5 @@
 package com.example.demo.model;
 
-public class RoleModel {
+public class Role {
   
 }
