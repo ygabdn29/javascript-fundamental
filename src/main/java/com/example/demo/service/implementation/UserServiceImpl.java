@@ -11,7 +11,7 @@ import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-@Autowired
+  @Autowired
   private UserRepository userRepository;
 
   @Override
@@ -20,20 +20,27 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User get(Integer id) {
-    return userRepository.findById(id).orElse(null);
+  public User get(Integer key) {
+    return userRepository.findById(key).orElse(null);
   }
 
   @Override
   public Boolean save(User entity) {
-    userRepository.save(entity);
-    return userRepository.findById(entity.getId()).isPresent();
+    User user = userRepository.save(entity);
+    return user.getId().equals(null);
   }
 
   @Override
-  public Boolean delete(Integer id) {
-    userRepository.deleteById(id);
-    return userRepository.findById(id).isEmpty();
+  public Boolean delete(Integer idInteger) {
+    userRepository.deleteById(idInteger);
+    return userRepository.findById(idInteger).isEmpty();
   }
-  
+
+  public User authenticate(String username, String password) {
+    User user = userRepository.findByUsername(username);
+    if (user != null && user.getPassword().equals(password)) {
+      return user;
+    }
+    return null;
+  }
 }
