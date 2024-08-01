@@ -11,91 +11,105 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+// import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+// import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_m_employee")
 public class Employee {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Integer id;
+    
+    @Column
+    private String name;
 
-  @Column
-  private String name;
+    @Column
+    private String email;
 
-  @Column
-  private String email;
+    @Column
+    private LocalDate birthDate;
 
-  @Column
-  private LocalDate birthDate;
+    @Column
+    private String address;
 
-  @Column
-  private String address;
+    @Column
+    private String phone;
 
-  @Column
-  private String phone;
+    // @OneToOne(mappedBy = "employee")
+    // @JsonIgnore
+    // private User user;
 
-  @OneToOne(mappedBy = "employee")
-  @JsonIgnore
-  private User user;
-  
-  public Employee(){
 
-  }
+    public Employee() {
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Employee(Integer id, String name, String email, LocalDate birthDate, String address, String phone) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.phone = phone;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public String getEmail() {
+        return email;
+    }
 
-  public LocalDate getBirthDate() {
-    return birthDate;
-  }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-  public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-  }
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
 
-  public String getAddress() {
-    return address;
-  }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
-  public void setAddress(String address) {
-    this.address = address;
-  }
+    public String getAddress() {
+        return address;
+    }
 
-  public String getPhone() {
-    return phone;
-  }
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public User getUser() {
-    return user;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public void setUser(User user) {
-    this.user = user;
-  }
-  
+    // public User getUser() {
+    //     return user;
+    // }
+
+    // public void setUser(User user) {
+    //     this.user = user;
+    // }
+
 }
