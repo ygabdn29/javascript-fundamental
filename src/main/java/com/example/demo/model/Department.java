@@ -1,9 +1,4 @@
 package com.example.demo.model;
-
-
-public class Department {
-  
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
