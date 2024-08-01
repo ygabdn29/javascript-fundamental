@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-public class AccountController {package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,9 @@ public class AccountController {
     @GetMapping("testlogin")
     public String index(Model model){
     model.addAttribute("users", userService.get());
+
     return "login/indexlogin";
+
    }
 
 
@@ -31,6 +32,7 @@ public class AccountController {
        User user = userService.authenticate(username, password);
        if (user != null) {
            model.addAttribute("user", user);
+
            return "login/welcome"; // Redirect ke welcome page
        } else {
            model.addAttribute("error", "Invalid username or password");
@@ -38,6 +40,7 @@ public class AccountController {
        }
    }
 }
+
 
   
 }
