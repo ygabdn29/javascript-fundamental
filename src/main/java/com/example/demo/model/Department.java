@@ -5,11 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_m_user")
-public class Role {
+@Table(name = "tb_m_department")
+public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -18,12 +20,17 @@ public class Role {
     @Column
     private String name;
 
-    public Role(Integer id, String name) {
-        this.id = id;
-        this.name = name;
+    @ManyToOne
+    @JoinColumn(name = "region_id", referencedColumnName = "id")
+    private Region region;
+
+    public Department() {
     }
 
-    public Role() {
+    public Department(Integer id, String name, Region region) {
+        this.id = id;
+        this.name = name;
+        this.region = region;
     }
 
     public Integer getId() {
@@ -42,7 +49,15 @@ public class Role {
         this.name = name;
     }
 
-    
+    public Region getRegion() {
+        return region;
+    }
 
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    
+    
 
 }

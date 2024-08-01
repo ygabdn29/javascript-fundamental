@@ -1,15 +1,18 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_m_user")
-public class Role {
+@Table(name = "tb_m_region")
+public class Region {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -18,12 +21,15 @@ public class Role {
     @Column
     private String name;
 
-    public Role(Integer id, String name) {
+    @OneToMany(mappedBy = "region")
+    List<Department> departments;
+
+    public Region(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Role() {
+    public Region() {
     }
 
     public Integer getId() {
@@ -42,7 +48,13 @@ public class Role {
         this.name = name;
     }
 
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
+
     
-
-
 }
