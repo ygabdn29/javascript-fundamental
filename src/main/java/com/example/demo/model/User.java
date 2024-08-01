@@ -35,11 +35,14 @@ public class User {
     this.password = password;
     this.username = username;
     this.role = role;
-  }
+    }
+    public User() {
+    }
 
-  public Integer getId() {
-    return id;
-  }
+
+    public Integer getId() {
+        return id;
+    }
 
   public void setId(Integer id) {
     this.id = id;
@@ -69,4 +72,5 @@ public class User {
     this.role = role;
   }
 
+    
 }
