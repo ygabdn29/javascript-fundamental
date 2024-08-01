@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,9 @@ public class AccountController {
     @GetMapping("testlogin")
     public String index(Model model){
     model.addAttribute("users", userService.get());
-    return "account/login";
+
+    return "login/indexlogin";
+
    }
 
 
@@ -29,10 +32,15 @@ public class AccountController {
        User user = userService.authenticate(username, password);
        if (user != null) {
            model.addAttribute("user", user);
-           return "account/welcome"; // Redirect ke welcome page
+
+           return "login/welcome"; // Redirect ke welcome page
        } else {
            model.addAttribute("error", "Invalid username or password");
-           return "account/login"; // Redirect balikin ke halaman login
+           return "login/indexlogin"; // Redirect balikin ke halaman login
        }
    }
+}
+
+
+  
 }
