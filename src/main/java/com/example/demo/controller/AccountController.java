@@ -78,7 +78,7 @@ public class AccountController {
   @PostMapping("role/update")
   public String roleUpdate(User user){
     if(user.getId() != null){
-      return userService.save(user) ? "redirect:/userlogin/role" : "error";
+      return userService.save(user) ? "redirect:/account/role" : "error";
     } 
     return "error";
   }
