@@ -1,6 +1,7 @@
 package com.example.demo.service.generic;
 
 import java.util.List;
+
 public interface GenericService<Entity, Key> {
     public List<Entity> get();
     public Entity get(Key id);
