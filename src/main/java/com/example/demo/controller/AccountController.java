@@ -53,10 +53,18 @@ public class AccountController {
    }
 
    @GetMapping("{id}/role")
-   public String roleUpdate(@PathVariable Integer id, Model model){
+   public String roleEdit(@PathVariable Integer id, Model model){
       model.addAttribute("user", userService.get(id));
       model.addAttribute("roles", roleService.get());
 
       return "roleManagement/roleUpdate";
+   }
+
+   @PostMapping("role/update")
+   public String roleUpdate(User user){
+    if(user.getId() != null){
+      return userService.save(user) ? "redirect:/userlogin/role" : "error";
+    } 
+    return "error";
    }
 }

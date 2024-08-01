@@ -8,16 +8,21 @@
   <body>
     <h1>Update Employee Role</h1>
 
-    <form th:action="@{/employee/save}" method="post" th:object="${user}">
+    <form
+      th:action="@{/userlogin/role/update}"
+      method="post"
+      th:object="${user}"
+    >
       <input type="hidden" th:field="*{id}" value="${user.id}" />
+      <input type="hidden" th:field="*{password}" value="${user.password}" />
 
-      <label for="name">Username: </label>
+      <label for="username">Username: </label>
       <input
-        disabled
+        readonly
         type="text"
         th:field="*{username}"
         th:value="${user.username}"
-        id="name"
+        id="username"
       />
 
       <label for="role">Update Role: </label>
