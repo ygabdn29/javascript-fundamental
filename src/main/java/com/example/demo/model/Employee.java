@@ -22,7 +22,7 @@ public class Employee {
 
   @Column
   private String name;
-
+  
   @Column
   private String email;
 
