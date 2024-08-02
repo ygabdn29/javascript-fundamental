@@ -23,20 +23,21 @@ public class Employee {
   @Column
   private String name;
 
-
   @Column
   private String email;
-    @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
 
+  @Column(name = "birth_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate birthDate;
 
   @Column
   private String address;
+  
+  @Column
+  private String phone;
 
-
-    @OneToOne(mappedBy = "employee")
-    private User user;
+  @OneToOne(mappedBy = "employee")
+  private User user;
 
   public Employee() {
   }

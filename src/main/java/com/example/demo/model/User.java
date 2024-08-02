@@ -1,4 +1,4 @@
-package com.example.demo5.model;
+package com.example.demo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_m_user")
-
 public class User{
   @Column(name = "password")
   private String password;

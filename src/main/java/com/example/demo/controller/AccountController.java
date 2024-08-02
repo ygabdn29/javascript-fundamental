@@ -1,9 +1,6 @@
-package com.example.demo5.controller;
-
-
+package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
 import com.example.demo.model.Employee;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -114,10 +109,10 @@ public class AccountController {
 
    @PostMapping("save")
    public String save(User user) {
-        Role defaultRole = roleService.get(2); // EMPLOYEE ROLE (LOWEST LEVEL)        
+        Role defaultRole = roleService.get(7); // EMPLOYEE ROLE (LOWEST LEVEL)        
         employeeService.save(user.getEmployee());      
         user.setRole(defaultRole);  
-        return userService.save(user) ? "redirect:/account" : "account/register";
+        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
    }
    
 
