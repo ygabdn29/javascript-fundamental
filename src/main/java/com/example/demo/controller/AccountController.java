@@ -79,8 +79,8 @@ public class AccountController {
     return "roleManagement/roleManagement";
   }
 
-  @GetMapping("find-username")
-  public String formUsername(Model model) {
+  @GetMapping("find-email")
+  public String formEmail(Model model) {
     return "account/formForgotPassword";
   }
 
