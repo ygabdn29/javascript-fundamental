@@ -37,13 +37,6 @@ public class AccountController {
         return "account/changePassword";
     }
 
-    // @GetMapping("password/change/{id}")
-    // public String form(@PathVariable(value = "id") Integer id, Model model) {
-    // User user = userService.get(id);
-    // model.addAttribute("user", user);
-    // return "account/changePassword";
-    // }
-
     @PostMapping("password/change/success")
     public String changePassword(@RequestParam("recentPass") String recentPass,
             @RequestParam("newPass") String newPass,
