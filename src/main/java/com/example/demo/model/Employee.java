@@ -22,23 +22,22 @@ public class Employee {
 
   @Column
   private String name;
-
-  @Column
-  private String phone;
   
   @Column
   private String email;
-    @Column(name = "birth_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birthDate;
 
+  @Column(name = "birth_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  private LocalDate birthDate;
+
+  @Column
+  private String phone;
 
   @Column
   private String address;
 
-
-    @OneToOne(mappedBy = "employee")
-    private User user;
+  @OneToOne(mappedBy = "employee")
+  private User user;
 
   public Employee() {
   }
@@ -100,11 +99,11 @@ public class Employee {
     this.phone = phone;
   }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 }
