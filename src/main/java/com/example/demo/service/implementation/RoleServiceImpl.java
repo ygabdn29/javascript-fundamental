@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.model.Role;
-import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
 
@@ -36,5 +35,5 @@ public class RoleServiceImpl implements RoleService{
   public Boolean delete(Integer id) {
     roleRepository.deleteById(id);
     return roleRepository.findById(id).isEmpty();
-  }  
+  }
 }

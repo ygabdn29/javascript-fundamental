@@ -11,16 +11,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_m_user")
+
 public class User{
-    @Column(name = "password")
-    private String password;
+  @Column(name = "password")
+  private String password;
 
-    @Column(name = "username")
-    private String username;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
+  @Column(name = "username")
+  private String username;
+
+  @ManyToOne
+  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  private Role role;
+
 
     @Id
     @Column
@@ -28,10 +31,8 @@ public class User{
     
     @OneToOne
     @MapsId
-    //@JoinColumn(name = "id", referencedColumnName = "id")
     private Employee employee;
 
-  
     public User() {
     }
 
@@ -40,13 +41,13 @@ public class User{
     this.password = password;
     }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
     public Role getRole() {
       return role;
@@ -79,9 +80,4 @@ public class User{
     public void setUsername(String username) {
       this.username = username;
     }
-
-    
-    
-    
-  
 }
