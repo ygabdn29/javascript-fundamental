@@ -7,6 +7,9 @@
 </head>
 <body>
     <div>
+        <div th:if="${successMsg}" class="alert alert-success mb-4">
+            <p th:text="${successMsg}"></p>
+          </div>
         <h1>Login</h1>
         <form th:action="@{login}" method="post"  th:object="${username}">
             <div>
