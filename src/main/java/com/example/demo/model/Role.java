@@ -28,6 +28,10 @@ public class Role {
     @OneToMany(mappedBy="role")
     private List<User> users;
 
+    public Role(){
+
+    }
+
     public Role(Integer id, String name, List<User> users) {
       this.id = id;
       this.name = name;

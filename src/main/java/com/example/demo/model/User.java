@@ -26,7 +26,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
-
+    
   
     public User(Integer id, String password, String username, Role role) {
     this.id = id;
@@ -34,6 +34,9 @@ public class User {
     this.username = username;
     this.role = role;
     }
+    public User() {
+    }
+
 
     public Integer getId() {
         return id;
@@ -58,6 +61,9 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
+    
 }
 
 

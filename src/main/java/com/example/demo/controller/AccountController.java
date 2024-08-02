@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,28 +17,55 @@ import com.example.demo.service.UserService;
 @Controller
 @RequestMapping("userlogin")
 public class AccountController {
-   @Autowired
+    @Autowired
     private UserService userService;
 
     @GetMapping("testlogin")
-    public String index(Model model){
-    model.addAttribute("users", userService.get());
-    return "login/indexlogin";
-   }
+    public String index(Model model, HttpSession session) {
+        // Check if user is already logged in
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser != null) {
+            model.addAttribute("user", loggedInUser);
+            return "login/welcome"; // If logged in, redirect to welcome page
+        }
+        model.addAttribute("users", userService.get());
+        return "login/login";
+    }
 
-   @PostMapping("login")
-   public String login(@RequestParam String username, @RequestParam String password, Model model) {
-       User user = userService.authenticate(username, password);
-       if (user != null) {
-           model.addAttribute("user", user);
-           return "login/welcome"; // Redirect ke welcome page
-       } else {
-           model.addAttribute("error", "Invalid username or password");
-           return "login/indexlogin"; // Redirect balikin ke halaman login
-       }
-   }
+    @PostMapping("login")
+    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
+        User user = userService.authenticate(username, password); // Authenticate user
+        if (user != null) {
+            session.setAttribute("user", user); // Store user in session
+            String sessionId = session.getId();
+            return "redirect:welcome/" + user.getId() + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
+        } else {
+            model.addAttribute("error", "Invalid username or password");
+            return "login/login"; // Redirect back to login page
+        }
+    }
+
+    @GetMapping("welcome/{userId}")
+    public String welcome(@PathVariable Integer userId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
+            return "redirect:testlogin";
+        }
+        model.addAttribute("user", loggedInUser);
+        return "login/welcome";
+    }
+
+    @GetMapping("session/{userId}")
+    public String getSessionId(@PathVariable Integer userId, Model model, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("user");
+        if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
+            return "redirect:testlogin";
+        }
+        String sessionId = session.getId();
+        model.addAttribute("sessionId", sessionId);
+        model.addAttribute("userId", userId);
+        return "login/session";
+    }
+
+    
 }
-
-
-  
-
