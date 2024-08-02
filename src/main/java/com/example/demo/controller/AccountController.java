@@ -108,7 +108,7 @@ public class AccountController {
 
    @PostMapping("save")
    public String save(User user) {
-        Role defaultRole = roleService.get(7); // EMPLOYEE ROLE (LOWEST LEVEL)        
+        Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)        
         employeeService.save(user.getEmployee());      
         user.setRole(defaultRole);  
         return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
