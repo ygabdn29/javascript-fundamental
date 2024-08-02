@@ -164,18 +164,20 @@ public class AccountController {
       @RequestParam("newPass") String newPass,
       @RequestParam("confirmPass") String confirmPass,
       Model model, RedirectAttributes redirectAttributes, HttpSession session) {
-        
+
     User loggedInUser = (User) session.getAttribute("user");
     User validatedUser = userService.validatePassword(loggedInUser, recentPass, newPass, confirmPass);
 
     if (validatedUser == null) {
-      redirectAttributes.addFlashAttribute("errorMsg", "Invalid Password or Unmatch Password");
+      redirectAttributes.addFlashAttribute("errorMsg", "Invalid Password or Unmatch Password. Please try again!");
       return "redirect:/account/password/change/";
     }
 
     validatedUser.setPassword(newPass);
     userService.save(validatedUser);
 
-    return "account/successPass";
+    session.invalidate();
+    redirectAttributes.addFlashAttribute("successMsg", "Your password has been successfully changed.");
+    return "redirect:/account/formlogin";
   }
 }
