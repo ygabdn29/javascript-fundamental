@@ -1,4 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo5.controller;
+
+
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.example.demo.model.Employee;
 import com.example.demo.model.Role;
@@ -27,7 +32,7 @@ public class AccountController {
   @Autowired
   private EmployeeService employeeService;
 
- @GetMapping("testlogin")
+    @GetMapping("formlogin")
     public String index(Model model, HttpSession session) {
         // Check if user is already logged in
         User loggedInUser = (User) session.getAttribute("user");
@@ -36,7 +41,7 @@ public class AccountController {
             return "login/welcome"; // If logged in, redirect to welcome page
         }
         model.addAttribute("users", userService.get());
-        return "login/login";
+        return "login/indexlogin";
     }
 
   @PostMapping("login")
@@ -45,10 +50,11 @@ public class AccountController {
         if (user != null) {
             session.setAttribute("user", user); // Store user in session
             String sessionId = session.getId();
-            return "redirect:welcome/" + user.getId() + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
+            Integer setId = user.getId();
+            return "redirect:welcome/" + setId + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
         } else {
             model.addAttribute("error", "Invalid username or password");
-            return "login/login"; // Redirect back to login page
+            return "login/indexlogin"; // Redirect back to login page
         }
     }
   
@@ -59,6 +65,7 @@ public class AccountController {
             return "redirect:testlogin";
         }
         model.addAttribute("user", loggedInUser);
+        model.addAttribute("userId", loggedInUser.getId());
         return "login/welcome";
     }
 
@@ -66,14 +73,14 @@ public class AccountController {
     public String getSessionId(@PathVariable Integer userId, Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("user");
         if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
-            return "redirect:testlogin";
+            return "redirect:indexlogin";
         }
         String sessionId = session.getId();
         model.addAttribute("sessionId", sessionId);
         model.addAttribute("userId", userId);
         return "login/session";
     }
-
+  
   @GetMapping("role")
   public String roleIndex(Model model) {
     model.addAttribute("users", userService.get());
@@ -150,6 +157,5 @@ public class AccountController {
 
     return "login/indexlogin";
   }
-
 }
 

@@ -5,5 +5,4 @@ import com.example.demo.service.generic.GenericService;
 
 public interface UserService extends GenericService<User, Integer> {
   public User authenticate(String username, String password);
-
 }
