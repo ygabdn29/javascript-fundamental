@@ -1,6 +1,4 @@
-package com.example.demo5.controller;
-
-
+package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
 

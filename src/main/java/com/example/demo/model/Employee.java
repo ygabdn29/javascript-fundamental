@@ -23,7 +23,9 @@ public class Employee {
   @Column
   private String name;
 
-
+  @Column
+  private String phone;
+  
   @Column
   private String email;
     @Column(name = "birth_date")
