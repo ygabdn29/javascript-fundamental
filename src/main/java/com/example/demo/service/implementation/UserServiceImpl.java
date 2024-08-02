@@ -1,13 +1,13 @@
-package com.example.demo5.service.implementation;
+package com.example.demo.service.implementation;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo5.model.User;
-import com.example.demo5.repository.UserRepository;
-import com.example.demo5.service.UserService;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,4 +45,15 @@ public class UserServiceImpl implements UserService {
     }
     return null;
   }
+
+  @Override
+    public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
+        if (!user.getPassword().equals(recentPassword)) {
+            return null; // Recent password is incorrect
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return null; // New password and confirm password do not match
+        }
+        return user; // Passwords are valid
+}
 }
