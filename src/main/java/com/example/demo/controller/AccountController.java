@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.example.demo.model.Employee;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -108,13 +106,14 @@ public class AccountController {
     return "account/register";
   }
 
-  @PostMapping("save")
-  public String save(User user) {
-    Role defaultRole = roleService.get(2); // EMPLOYEE ROLE (LOWEST LEVEL)
-    employeeService.save(user.getEmployee());
-    user.setRole(defaultRole);
-    return userService.save(user) ? "redirect:/account" : "account/register";
-  }
+   @PostMapping("save")
+   public String save(User user) {
+        Role defaultRole = roleService.get(7); // EMPLOYEE ROLE (LOWEST LEVEL)        
+        employeeService.save(user.getEmployee());      
+        user.setRole(defaultRole);  
+        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
+   }
+   
 
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model) {
@@ -165,18 +164,20 @@ public class AccountController {
       @RequestParam("newPass") String newPass,
       @RequestParam("confirmPass") String confirmPass,
       Model model, RedirectAttributes redirectAttributes, HttpSession session) {
-        
+
     User loggedInUser = (User) session.getAttribute("user");
     User validatedUser = userService.validatePassword(loggedInUser, recentPass, newPass, confirmPass);
 
     if (validatedUser == null) {
-      redirectAttributes.addFlashAttribute("errorMsg", "Invalid Password or Unmatch Password");
+      redirectAttributes.addFlashAttribute("errorMsg", "Invalid Password or Unmatch Password. Please try again!");
       return "redirect:/account/password/change/";
     }
 
     validatedUser.setPassword(newPass);
     userService.save(validatedUser);
 
-    return "account/successPass";
+    session.invalidate();
+    redirectAttributes.addFlashAttribute("successMsg", "Your password has been successfully changed.");
+    return "redirect:/account/formlogin";
   }
 }
