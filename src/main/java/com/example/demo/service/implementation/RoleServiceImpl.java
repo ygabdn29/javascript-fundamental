@@ -10,31 +10,30 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
 
 @Service
-public class RoleServiceImpl implements RoleService {
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Override
-    public List<Role> get() {
-        return roleRepository.findAll();
-    }
-
-    @Override
-    public Role get(Integer id) {
-        return roleRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Boolean save(Role entity) {
-        roleRepository.save(entity);
-        return roleRepository.findById(entity.getId()).isPresent();
-    }
-
-    @Override
-    public Boolean delete(Integer id) {
-        roleRepository.deleteById(id);
-        return roleRepository.findById(id).isEmpty();
-    }
+public class RoleServiceImpl implements RoleService{
+  @Autowired
+  private RoleRepository roleRepository;
 
 
+  @Override
+  public List<Role> get() {
+    return roleRepository.findAll();
+  }
+
+  @Override
+  public Role get(Integer id) {
+    return roleRepository.findById(id).orElse(null);
+  }
+
+  @Override
+  public Boolean save(Role entity) {
+    Role role = roleRepository.save(entity);
+    return role.getId().equals(null);
+  }
+
+  @Override
+  public Boolean delete(Integer id) {
+    roleRepository.deleteById(id);
+    return roleRepository.findById(id).isEmpty();
+  }
 }
