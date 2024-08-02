@@ -1,4 +1,4 @@
-package com.example.demo5.controller;
+package com.example.demo.controller;
 
 
 
@@ -117,7 +117,7 @@ public class AccountController {
         Role defaultRole = roleService.get(2); // EMPLOYEE ROLE (LOWEST LEVEL)        
         employeeService.save(user.getEmployee());      
         user.setRole(defaultRole);  
-        return userService.save(user) ? "redirect:/account" : "account/register";
+        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
    }
    
 

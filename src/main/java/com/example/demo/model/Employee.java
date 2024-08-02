@@ -34,6 +34,9 @@ public class Employee {
   @Column
   private String address;
 
+  @Column
+  private String phone;
+
 
     @OneToOne(mappedBy = "employee")
     private User user;
