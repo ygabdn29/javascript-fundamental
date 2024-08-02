@@ -165,8 +165,8 @@ public class AccountController {
       @RequestParam("newPass") String newPass,
       @RequestParam("confirmPass") String confirmPass,
       Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        
     User loggedInUser = (User) session.getAttribute("user");
-
     User validatedUser = userService.validatePassword(loggedInUser, recentPass, newPass, confirmPass);
 
     if (validatedUser == null) {
@@ -177,6 +177,6 @@ public class AccountController {
     validatedUser.setPassword(newPass);
     userService.save(validatedUser);
 
-    return "redirect:/account";
+    return "account/successPass";
   }
 }
