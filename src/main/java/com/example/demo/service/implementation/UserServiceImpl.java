@@ -45,4 +45,15 @@ public class UserServiceImpl implements UserService {
     }
     return null;
   }
+
+  @Override
+    public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
+        if (!user.getPassword().equals(recentPassword)) {
+            return null; // Recent password is incorrect
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            return null; // New password and confirm password do not match
+        }
+        return user; // Passwords are valid
+}
 }
