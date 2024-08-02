@@ -24,9 +24,11 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(key).orElse(null);
   }
 
+
   @Override
   public Boolean save(User entity) {
     userRepository.save(entity);
+
     return userRepository.findById(entity.getId()).isPresent();
   }
 

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.Employee;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.service.EmployeeService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
+
 
 @Controller
 @RequestMapping("account")
@@ -95,6 +97,23 @@ public class AccountController {
     return "account/resetPassword";
   }
 
+
+   @GetMapping("register")
+   public String register(Model model) {
+        model.addAttribute("employee", new Employee());
+        model.addAttribute("user", new User());
+        return "account/register";
+   }
+
+   @PostMapping("save")
+   public String save(User user) {
+        Role defaultRole = roleService.get(2); // EMPLOYEE ROLE (LOWEST LEVEL)        
+        employeeService.save(user.getEmployee());      
+        user.setRole(defaultRole);  
+        return userService.save(user) ? "redirect:/account" : "account/register";
+   }
+   
+
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model){
     model.addAttribute("user", userService.get(id));
@@ -131,4 +150,6 @@ public class AccountController {
 
     return "login/indexlogin";
   }
+
 }
+
