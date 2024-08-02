@@ -22,7 +22,7 @@ public class Employee {
 
   @Column
   private String name;
-
+  
   @Column
   private String email;
 
@@ -35,7 +35,7 @@ public class Employee {
 
   @Column
   private String address;
-
+  
   @OneToOne(mappedBy = "employee")
   private User user;
 
