@@ -34,6 +34,11 @@ public class Role {
       this.users = users;
     }
 
+    
+    public Role() {
+    }
+
+
     public Integer getId() {
       return id;
     }

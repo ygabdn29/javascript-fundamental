@@ -9,6 +9,7 @@
     <form method="post" th:action="@{save}" th:object="${user}">
         <input th:field="*{employee.name}" name = "name" placeholder="Employee Name"><br>
         <input th:field="*{employee.email}" name = "email" placeholder="Email"><br>
+        <label for="birthDate">Birth Date (yyyy-mm-dd)</label><br>
         <input th:field="*{employee.birthDate}" name = "birthDate" placeholder="Birth Date"><br>
         <input th:field="*{employee.address}" name = "address" placeholder="Address"><br>
         <input th:field="*{employee.phone}" name = "phone" placeholder="Phone"><br>

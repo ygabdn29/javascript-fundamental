@@ -11,7 +11,8 @@ import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
-      @Autowired
+  
+    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -34,14 +35,5 @@ public class UserServiceImpl implements UserService{
     public Boolean delete(Integer idInteger) {
         userRepository.deleteById(idInteger);
         return userRepository.findById(idInteger).isEmpty();
-    }
-
-
-    public User authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        return null;
     }
 }

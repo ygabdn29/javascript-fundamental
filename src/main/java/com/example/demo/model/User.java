@@ -2,15 +2,18 @@ package com.example.demo.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_m_user")
-public class User {
-  @Column(name = "password")
-  private String password;
+public class User{
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "username")
     private String username;
@@ -19,20 +22,22 @@ public class User {
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
+    @Id
+    @Column
+    private Integer id;
+    
+    @OneToOne
+    @MapsId
+    //@JoinColumn(name = "id", referencedColumnName = "id")
+    private Employee employee;
+
   
-    public User(Integer id, String password, String username, Role role) {
-    this.id = id;
-    this.password = password;
-    this.username = username;
+    public User() {
+    }
+
+    public User(Role role, String password) {
     this.role = role;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    this.password = password;
     }
 
     public String getPassword() {
@@ -43,34 +48,40 @@ public class User {
         this.password = password;
     }
 
+    public Role getRole() {
+      return role;
+    }
+
+    public void setRole(Role role) {
+      this.role = role;
+    }
+
+    public Employee getEmployee() {
+      return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+      this.employee = employee;
+    }
+
+    public Integer getId() {
+      return id;
+    }
+
+    public void setId(Integer id) {
+      this.id = id;
+    }
+
     public String getUsername() {
-        return username;
+      return username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+      this.username = username;
     }
-}
 
-
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public Role getRole() {
-    return role;
-  }
-
-  public void setRole(Role role) {
-    this.role = role;
-  }
-
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public void setEmployee(Employee employee) {
-    this.employee = employee;
-  }
+    
+    
+    
+  
 }
