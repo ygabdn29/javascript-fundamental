@@ -1,12 +1,14 @@
-package com.example.demo.model;
+package com.example.demo5.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+
 import javax.persistence.Table;
 
 @Entity
@@ -80,4 +82,5 @@ public class User{
     public void setUsername(String username) {
       this.username = username;
     }
+
 }
