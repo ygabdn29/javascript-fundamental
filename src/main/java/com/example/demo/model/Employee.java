@@ -31,11 +31,11 @@ public class Employee {
   private LocalDate birthDate;
 
   @Column
-  private String address;
-  
-  @Column
   private String phone;
 
+  @Column
+  private String address;
+  
   @OneToOne(mappedBy = "employee")
   private User user;
 
@@ -99,11 +99,11 @@ public class Employee {
     this.phone = phone;
   }
 
-    public User getUser() {
-        return user;
-    }
+  public User getUser() {
+    return user;
+  }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+  public void setUser(User user) {
+    this.user = user;
+  }
 }
