@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class AccountController {
   private RoleService roleService;
   @Autowired
   private EmployeeService employeeService;
+  
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
@@ -111,6 +115,7 @@ public class AccountController {
   @PostMapping("save")
   public String save(User user) {
     Role defaultRole = roleService.get(2); // EMPLOYEE ROLE (LOWEST LEVEL)
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     employeeService.save(user.getEmployee());
     user.setRole(defaultRole);
     return userService.save(user) ? "redirect:/account" : "account/register";
