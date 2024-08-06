@@ -38,6 +38,9 @@ public class AccountController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
     model.addAttribute("users", userService.get());
@@ -131,13 +134,13 @@ public class AccountController {
 
   @PostMapping("save")
   public String save(User user) {
-        Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)        
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(defaultRole);  
-        employeeService.save(user.getEmployee());      
-        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
-   }
-   
+    Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    employeeService.save(user.getEmployee());
+    user.setRole(defaultRole);
+    return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
+  }
+
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model) {
     model.addAttribute("user", userService.get(id));
@@ -169,7 +172,7 @@ public class AccountController {
       return "account/resetPassword";
     }
 
-    user.setPassword(password);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userService.save(user);
 
     return "login/indexlogin";
