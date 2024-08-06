@@ -36,4 +36,9 @@ public class RoleServiceImpl implements RoleService{
     roleRepository.deleteById(id);
     return roleRepository.findById(id).isEmpty();
   }
+
+  @Override
+  public Role getRoleWithLowestLevel() {
+    return roleRepository.findRoleWithLowestLevel();
+}
 }
