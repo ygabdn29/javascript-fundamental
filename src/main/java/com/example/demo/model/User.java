@@ -26,21 +26,21 @@ public class User{
   private Role role;
 
 
-    @Id
-    @Column
-    private Integer id;
+  @Id
+  @Column
+  private Integer id;
     
-    @OneToOne
-    @MapsId
-    private Employee employee;
+  @OneToOne
+  @MapsId
+  private Employee employee;
 
-    public User() {
-    }
+  public User() {
+  }
 
-    public User(Role role, String password) {
+  public User(Role role, String password) {
     this.role = role;
     this.password = password;
-    }
+  }
 
   public String getPassword() {
     return password;
@@ -50,36 +50,36 @@ public class User{
     this.password = password;
   }
 
-    public Role getRole() {
+  public Role getRole() {
       return role;
-    }
+  }
 
-    public void setRole(Role role) {
+  public void setRole(Role role) {
       this.role = role;
-    }
+  }
 
-    public Employee getEmployee() {
+  public Employee getEmployee() {
       return employee;
-    }
+  }
 
-    public void setEmployee(Employee employee) {
+  public void setEmployee(Employee employee) {
       this.employee = employee;
-    }
+  }
 
-    public Integer getId() {
+  public Integer getId() {
       return id;
-    }
+  }
 
-    public void setId(Integer id) {
+  public void setId(Integer id) {
       this.id = id;
-    }
+  }
 
-    public String getUsername() {
+  public String getUsername() {
       return username;
-    }
+  }
 
-    public void setUsername(String username) {
+  public void setUsername(String username) {
       this.username = username;
-    }
+  }
 
 }

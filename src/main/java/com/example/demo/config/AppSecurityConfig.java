@@ -13,16 +13,17 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class AppSecurityConfig {
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-    throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            
+  // Authentication
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  // Authorization
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+      http  
             .csrf().disable()
             .authorizeRequests((auth) -> {
                 try {
@@ -43,22 +44,18 @@ public class AppSecurityConfig {
                             .logoutUrl("/account/logout")
                             .logoutSuccessUrl("/account/formlogin")
                             .permitAll();
-                            
-
                 } catch (Exception e) {
                     // TODO: handle exception
                     throw new RuntimeErrorException(null);
                 }
-           
-            });
+              });
+      return http.build();
+  }
 
-            return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
+  // tambahan library menggunakan BCrypt
+  @Bean
+  public PasswordEncoder passwordEncoder(){
+    return new BCryptPasswordEncoder();
+  }
 
 }
