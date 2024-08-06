@@ -37,6 +37,7 @@ public class RoleServiceImpl implements RoleService{
     return roleRepository.findById(id).isEmpty();
   }
 
+  @Override
   public Role getRoleWithLowestLevel() {
     return roleRepository.findRoleWithLowestLevel();
 }
