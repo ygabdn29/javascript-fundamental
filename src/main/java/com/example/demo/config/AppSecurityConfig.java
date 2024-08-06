@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+
 import javax.management.RuntimeErrorException;
 
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class AppSecurityConfig {
+
   // Authentication
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
@@ -57,4 +59,5 @@ public class AppSecurityConfig {
   public PasswordEncoder passwordEncoder(){
     return new BCryptPasswordEncoder();
   }
+
 }

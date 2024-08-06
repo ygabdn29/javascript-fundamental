@@ -3,9 +3,11 @@ package com.example.demo.controller;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,8 +40,10 @@ public class AccountController {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
+
     model.addAttribute("users", userService.get());
     return "login/indexlogin";
   }
@@ -71,6 +75,7 @@ public class AccountController {
   }
 
   private static Collection<? extends GrantedAuthority> getAuthorities(String role){
+
     final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
     authorities.add(new SimpleGrantedAuthority(role));
     return authorities;
@@ -81,6 +86,7 @@ public class AccountController {
     User loggedInUser = (User) session.getAttribute("user");
     if (loggedInUser == null) {
       return "redirect:formlogin";
+
     }
     model.addAttribute("user", loggedInUser);
     model.addAttribute("userId", loggedInUser.getId());
@@ -131,13 +137,13 @@ public class AccountController {
 
   @PostMapping("save")
   public String save(User user) {
-        Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)        
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(defaultRole);  
-        employeeService.save(user.getEmployee());      
-        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
-   }
-   
+    Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
+    employeeService.save(user.getEmployee());
+    user.setRole(defaultRole);
+    return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
+  }
+
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model) {
     model.addAttribute("user", userService.get(id));
@@ -169,7 +175,7 @@ public class AccountController {
       return "account/resetPassword";
     }
 
-    user.setPassword(password);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userService.save(user);
 
     return "login/indexlogin";
@@ -196,7 +202,7 @@ public class AccountController {
       return "redirect:/account/password/change/";
     }
 
-    validatedUser.setPassword(newPass);
+    validatedUser.setPassword(passwordEncoder.encode(newPass));
     userService.save(validatedUser);
 
     session.invalidate();

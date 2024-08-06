@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(idInteger).isEmpty();
   }
 
-  //
   @Override
   public User authenticate(String username, String password) {
     User user = userRepository.findByUsername(username);
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
     public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
-        if (!user.getPassword().equals(recentPassword)) {
+        if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
             return null; // Recent password is incorrect
         }
         if (!newPassword.equals(confirmPassword)) {
