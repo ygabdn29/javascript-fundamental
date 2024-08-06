@@ -41,9 +41,6 @@ public class AccountController {
   private PasswordEncoder passwordEncoder;
 
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
 
