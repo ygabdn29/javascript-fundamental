@@ -13,39 +13,36 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AppSecurityConfig {
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
     return authenticationConfiguration.getAuthenticationManager();
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-      http
-              .csrf(csrf -> csrf.disable())
-              .authorizeRequests((auth) -> {
-                  try {
-                      auth
-                      .antMatchers("/").permitAll()       
-                              .antMatchers("/account/register").permitAll()
-                              .antMatchers("/account/forgot-password").permitAll()
-                              .antMatchers("/account/role").authenticated()
-                              .antMatchers("/account/reset-password").authenticated()
-                              .anyRequest().permitAll()
-                              .and()
-                              .formLogin(login -> login
-                                      .loginPage("/account/formlogin"));
-                              // .httpBasic()
-                              // .logout(logout -> logout
-                              //         // .logoutUrl(null)
-                              //         .logoutSuccessUrl("/account/formlogin").permitAll());
-                  } catch (Exception e) {
-                      throw new RuntimeException(e);
-                  }
-              });
-      return http.build();
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeRequests((auth) -> {
+          try {
+            auth
+                .antMatchers("/").permitAll()
+                .antMatchers("/account/**").permitAll()
+                .antMatchers("/account/role").authenticated()
+                .antMatchers("/account/reset-password").authenticated()
+                .antMatchers("/account/welcome").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .formLogin(login -> login
+                    .loginPage("/account/formlogin"));
+          } catch (Exception e) {
+            throw new RuntimeException(e);
+          }
+        });
+    return http.build();
   }
 
   @Bean
-  public PasswordEncoder passwordEncoder(){
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 }
