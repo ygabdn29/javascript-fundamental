@@ -17,6 +17,9 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
   @Override
   public List<User> get() {
     return userRepository.findAll();

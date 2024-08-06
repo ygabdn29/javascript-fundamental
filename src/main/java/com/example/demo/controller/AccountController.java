@@ -7,7 +7,7 @@ import javax.servlet.http.HttpSession;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +39,6 @@ public class AccountController {
   private EmployeeService employeeService;
   @Autowired
   private PasswordEncoder passwordEncoder;
-
 
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
@@ -86,7 +85,6 @@ public class AccountController {
     User loggedInUser = (User) session.getAttribute("user");
     if (loggedInUser == null) {
       return "redirect:formlogin";
-
     }
     model.addAttribute("user", loggedInUser);
     model.addAttribute("userId", loggedInUser.getId());
@@ -135,14 +133,14 @@ public class AccountController {
     return "account/register";
   }
 
-  @PostMapping("save")
-  public String save(User user) {
-    Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    employeeService.save(user.getEmployee());
-    user.setRole(defaultRole);
-    return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
-  }
+   @PostMapping("save")
+   public String save(User user) {
+        Role defaultRole = roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)  
+        user.setPassword(passwordEncoder.encode(user.getPassword()));      
+        employeeService.save(user.getEmployee());      
+        user.setRole(defaultRole);  
+        return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
+   }
 
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model) {
@@ -208,5 +206,12 @@ public class AccountController {
     session.invalidate();
     redirectAttributes.addFlashAttribute("successMsg", "Your password has been successfully changed.");
     return "redirect:/account/formlogin";
+  } 
+
+
+  private static Collection<? extends GrantedAuthority> getAuthorities(String role) {
+    final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
+    authorities.add(new SimpleGrantedAuthority(role));
+    return authorities;
   }
 }
