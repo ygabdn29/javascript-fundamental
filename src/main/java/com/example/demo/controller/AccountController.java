@@ -1,7 +1,17 @@
 package com.example.demo.controller;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +27,7 @@ import com.example.demo.service.EmployeeService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 
+
 @Controller
 @RequestMapping("account")
 public class AccountController {
@@ -26,15 +37,17 @@ public class AccountController {
   private RoleService roleService;
   @Autowired
   private EmployeeService employeeService;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
     // Check if user is already logged in
-    User loggedInUser = (User) session.getAttribute("user");
-    if (loggedInUser != null) {
-      model.addAttribute("user", loggedInUser);
-      return "login/welcome"; // If logged in, redirect to welcome page
-    }
+    // User loggedInUser = (User) session.getAttribute("user");
+    // if (loggedInUser != null) {
+    //   model.addAttribute("user", loggedInUser);
+    //   return "login/welcome"; // If logged in, redirect to welcome page
+    // }
     model.addAttribute("users", userService.get());
     return "login/indexlogin";
   }
@@ -42,22 +55,42 @@ public class AccountController {
   @PostMapping("login")
   public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
     User user = userService.authenticate(username, password); // Authenticate user
-    if (user != null) {
-      session.setAttribute("user", user); // Store user in session
-      String sessionId = session.getId();
-      Integer setId = user.getId();
-      return "redirect:welcome/" + setId + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
-    } else {
-      model.addAttribute("error", "Invalid username or password");
-      return "login/indexlogin"; // Redirect back to login page
+    // if (user != null) {
+    //   session.setAttribute("user", user); // Store user in session
+    //   // String sessionId = session.getId();
+    //   Integer setId = user.getId();
+    //   return "redirect:welcome/" + setId; // Redirect with user ID and session ID
+    // } else {
+    //   model.addAttribute("error", "Invalid username or password");
+    //   return "login/indexlogin"; // Redirect back to login page
+    // }
+
+    try {
+      org.springframework.security.core.userdetails.User userlogin = new org.springframework.security.core.userdetails.User(user.getId().toString(), "", grantedAuthorities(user.getRole().getName()));
+      PreAuthenticatedAuthenticationToken authenticatedAuthenticationToken = new PreAuthenticatedAuthenticationToken(userlogin,"", userlogin.getAuthorities());
+      SecurityContextHolder.getContext().setAuthentication(authenticatedAuthenticationToken);
+      session.setAttribute("user", user);
+      return "redirect:welcome";
+    } catch (Exception e) {
+      // TODO: handle exception
+      return "login/indexlogin";
     }
+    // satu akun satu role 
+    
   }
 
-  @GetMapping("welcome/{userId}")
-  public String welcome(@PathVariable Integer userId, Model model, HttpSession session) {
+  public static Collection<? extends GrantedAuthority> grantedAuthorities(String role){
+    final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
+    authorities.add(new SimpleGrantedAuthority(role));
+    return authorities;
+  } 
+
+
+  @GetMapping("welcome")
+  public String welcome(Model model, HttpSession session) {
     User loggedInUser = (User) session.getAttribute("user");
-    if (loggedInUser == null || !loggedInUser.getId().equals(userId)) {
-      return "redirect:testlogin";
+    if (loggedInUser == null) {
+      return "redirect:formlogin";
     }
     model.addAttribute("user", loggedInUser);
     model.addAttribute("userId", loggedInUser.getId());
@@ -108,7 +141,8 @@ public class AccountController {
 
    @PostMapping("save")
    public String save(User user) {
-        Role defaultRole = roleService.get(7); // EMPLOYEE ROLE (LOWEST LEVEL)        
+        Role defaultRole =  roleService.getRoleWithLowestLevel(); // EMPLOYEE ROLE (LOWEST LEVEL)  
+        user.setPassword( passwordEncoder.encode((user.getPassword())));       
         employeeService.save(user.getEmployee());      
         user.setRole(defaultRole);  
         return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
@@ -180,4 +214,6 @@ public class AccountController {
     redirectAttributes.addFlashAttribute("successMsg", "Your password has been successfully changed.");
     return "redirect:/account/formlogin";
   }
+
+  
 }

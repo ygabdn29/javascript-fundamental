@@ -10,10 +10,9 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
   @Autowired
   private RoleRepository roleRepository;
-
 
   @Override
   public List<Role> get() {
@@ -35,5 +34,10 @@ public class RoleServiceImpl implements RoleService{
   public Boolean delete(Integer id) {
     roleRepository.deleteById(id);
     return roleRepository.findById(id).isEmpty();
+  }
+
+  @Override
+  public Role getRoleWithLowestLevel() {
+    return roleRepository.findRoleWithLowestLevel();
   }
 }
