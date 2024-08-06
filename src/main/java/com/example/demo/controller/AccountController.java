@@ -3,8 +3,9 @@ package com.example.demo.controller;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.servlet.http.HttpSession;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,49 +42,45 @@ public class AccountController {
 
   @GetMapping("formlogin")
   public String index(Model model, HttpSession session) {
-    // Check if user is already logged in
-    // User loggedInUser = (User) session.getAttribute("user");
-    // if (loggedInUser != null) {
-    //   model.addAttribute("user", loggedInUser);
-    //   return "login/welcome"; // If logged in, redirect to welcome page
-    // }
+
     model.addAttribute("users", userService.get());
     return "login/indexlogin";
   }
 
   @PostMapping("login")
   public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
-    User user = userService.authenticate(username, password); // Authenticate user
-    // if (user != null) {
-    //   session.setAttribute("user", user); // Store user in session
-    //   String sessionId = session.getId();
-    //   Integer setId = user.getId();
-    //   return "redirect:welcome/" + setId + ";jsessionid=" + sessionId; // Redirect with user ID and session ID
-    // } else {
-    //   model.addAttribute("error", "Invalid username or password");
-    //   return "login/indexlogin"; // Redirect back to login page
-    // }
+    User userLogin = userService.authenticate(username, password); 
+    try{
+      // get data dari repo USER
+      // ID & Roles
+      org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
+        userLogin.getId().toString(), // ID yang login
+        "", // Password
+        getAuthorities(userLogin.getRole().getName())); //Role yang dimiliki akun tersebut
 
-    try {
-        org.springframework.security.core.userdetails.User userlogin = new org.springframework.security.core.userdetails.User(
-        user.getId().toString(), // ID yang login 
-        "", // PASSWORD
-        getAuthorities(user.getRole().getName()) // ROLE yang dimiliki oleh akun tersebut
-        );
         PreAuthenticatedAuthenticationToken authenticationToken = new PreAuthenticatedAuthenticationToken(
-        userlogin, // DIDAPATKAN dari instance object user diatas  
-        "",
-        userlogin.getAuthorities()); // DIDAPATKAN dari instance object user diatas
+          user, // dari instance object user diatas
+          "", 
+          user.getAuthorities()); // Dari instance object user diatas
+
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        session.setAttribute("user", user);
-        return "redirect:welcome"; // routing   
-    } catch (Exception e) {
-        return "login/indexlogin"; // nama file
+        session.setAttribute("user", userLogin);
+        return "redirect:welcome"; // routing
+    }catch(Exception e){
+      // handle exception
+      return "login/indexlogin"; // filenya
     }
 
   }
 
-  @GetMapping("welcome")
+  private static Collection<? extends GrantedAuthority> getAuthorities(String role){
+
+    final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
+    authorities.add(new SimpleGrantedAuthority(role));
+    return authorities;
+  }
+
+  @GetMapping("welcome") //@PathVariable Integer userId
   public String welcome(Model model, HttpSession session) {
     User loggedInUser = (User) session.getAttribute("user");
     if (loggedInUser == null) {
@@ -144,7 +141,6 @@ public class AccountController {
         user.setRole(defaultRole);  
         return userService.save(user) ? "redirect:/account/formlogin" : "account/register";
    }
-   
 
   @GetMapping("{id}/role")
   public String roleEdit(@PathVariable Integer id, Model model) {
@@ -157,9 +153,9 @@ public class AccountController {
   @PostMapping("role/update")
   public String roleUpdate(User user) {
     if (user.getId() != null) {
-      return userService.save(user) ? "redirect:/account/role" : "error";
+      return userService.save(user) ? "redirect:/account/role" : "redirect:/error";
     }
-    return "error";
+    return "errorPage/error";
   }
 
   @PostMapping("reset-password")
@@ -177,7 +173,7 @@ public class AccountController {
       return "account/resetPassword";
     }
 
-    user.setPassword(password);
+    user.setPassword(passwordEncoder.encode(user.getPassword()));
     userService.save(user);
 
     return "login/indexlogin";
@@ -204,7 +200,7 @@ public class AccountController {
       return "redirect:/account/password/change/";
     }
 
-    validatedUser.setPassword(newPass);
+    validatedUser.setPassword(passwordEncoder.encode(newPass));
     userService.save(validatedUser);
 
     session.invalidate();

@@ -14,6 +14,8 @@ import com.example.demo.service.UserService;
 public class UserServiceImpl implements UserService {
   @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(idInteger).isEmpty();
   }
 
-  @Override 
+  @Override
   public User authenticate(String username, String password) {
     User user = userRepository.findByUsername(username);
     if (user != null && passwordEncoder.matches(password, user.getPassword())) {
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
     public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
-        if (!user.getPassword().equals(recentPassword)) {
+        if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
             return null; // Recent password is incorrect
         }
         if (!newPassword.equals(confirmPassword)) {
