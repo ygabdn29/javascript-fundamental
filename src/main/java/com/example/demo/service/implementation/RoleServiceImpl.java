@@ -39,5 +39,5 @@ public class RoleServiceImpl implements RoleService {
   @Override
   public Role getRoleWithLowestLevel() {
     return roleRepository.findRoleWithLowestLevel();
-  }
+}
 }
