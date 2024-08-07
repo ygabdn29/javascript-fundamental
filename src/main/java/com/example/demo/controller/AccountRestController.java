@@ -40,7 +40,7 @@ public class AccountRestController {
             validUser.setGuid(guid); // set user lokal
             userService.save(validUser); //update ke db
             String linkEmailGuid = "http://localhost:8080/api/account/password/change/" + guid;
-            emailService.sendEmail("reza.mahesa.azandi@gmail.com", "Change password", "Please click the link below to change your password\n" + linkEmailGuid);
+            emailService.sendEmail(validUser.getEmployee().getEmail(), "Change password", "Please click the link below to change your password\n" + linkEmailGuid);
             return utils.generateResponseEntity(HttpStatus.OK, "We've sent you an email");
         }
         else{
