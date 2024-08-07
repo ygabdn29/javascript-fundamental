@@ -12,4 +12,5 @@ public interface UserService extends GenericService<User, Integer> {
     public User verifyUser(String guidString);
     public Boolean isValidPassword(String password);
 
+
 }
