@@ -6,3 +6,4 @@ import com.example.demo.service.generic.GenericService;
 public interface RegionService extends GenericService<Region, Integer>{
     
 }
+

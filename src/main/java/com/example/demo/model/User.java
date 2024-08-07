@@ -3,22 +3,29 @@ package com.example.demo.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_m_user")
-public class User {
-  @Column(name = "password")
+
+public class User{
+  @Column(name ="password")
   private String password;
 
-  @Column(name = "username")
+  @Column(name ="username")
   private String username;
+
+  @Column(name ="is_verified")
+  private Boolean isVerified;
+
+  @Column(name ="guid")
+  private String guid;
 
   @ManyToOne
   @JoinColumn(name = "role_id", referencedColumnName = "id")
@@ -36,10 +43,12 @@ public class User {
 
   @OneToOne
   @MapsId
+  @JsonIgnore
   private Employee employee;
 
   public User() {
   }
+
 
   public User(String password, String username, Role role, Integer id, Boolean isVerified, String guid,
       Employee employee) {
@@ -51,7 +60,6 @@ public class User {
     this.guid = guid;
     this.employee = employee;
   }
-
   public String getPassword() {
     return password;
   }
@@ -66,6 +74,13 @@ public class User {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+  public Boolean getIsVerified() {
+    return isVerified;
+  }
+
+  public void setIsVerified(Boolean isVerified) {
+    this.isVerified = isVerified;
   }
 
   public Role getRole() {
@@ -84,13 +99,6 @@ public class User {
     this.id = id;
   }
 
-  public Boolean getIsVerified() {
-    return isVerified;
-  }
-
-  public void setIsVerified(Boolean isVerified) {
-    this.isVerified = isVerified;
-  }
 
   public String getGuid() {
     return guid;

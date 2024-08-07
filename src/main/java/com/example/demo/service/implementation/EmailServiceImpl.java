@@ -11,16 +11,12 @@ import com.example.demo.service.EmailService;
 public class EmailServiceImpl implements EmailService{
     @Autowired
     private JavaMailSender mailSender;
-
-    public void sendEmail(String toEmail, String subject, String body) {
+    public void sendEmail(String toEmail, String subject, String body){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("hazelenout@gmail.com");
+        message.setFrom("reza.mahesa.azandi@gmail.com");
         message.setTo(toEmail);
         message.setText(body);
-        message.setSubject(subject);
+        message.setSubject(subject);        
         mailSender.send(message);
-
-        System.out.println("mail sent successfully.....");
     }
-    
 }

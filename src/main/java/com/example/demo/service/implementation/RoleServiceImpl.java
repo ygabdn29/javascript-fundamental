@@ -10,10 +10,9 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
   @Autowired
   private RoleRepository roleRepository;
-
 
   @Override
   public List<Role> get() {
