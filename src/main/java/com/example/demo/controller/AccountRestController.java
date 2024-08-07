@@ -73,6 +73,7 @@ public class AccountRestController {
   public ResponseEntity<Object> verifyEmail(@PathVariable String guid) {
     User user = userService.verifyUser(guid);
     if (user != null) {
+      user.setIsVerified(true);
       user.setGuid(null);
       userService.save(user);
       return Utils.generaResponseEntity(HttpStatus.OK, "Verification Account successfully");
