@@ -10,10 +10,10 @@ import com.example.demo.repository.RegionRepository;
 import com.example.demo.service.RegionService;
 
 @Service
-public class RegionServiceImpl implements RegionService {
+public class RegionServiceImpl implements RegionService{
   @Autowired
   private RegionRepository regionRepository;
-  
+
   @Override
   public List<Region> get() {
     return regionRepository.findAll();
@@ -35,5 +35,4 @@ public class RegionServiceImpl implements RegionService {
     regionRepository.deleteById(id);
     return regionRepository.findById(id).isEmpty();
   }
-  
 }
