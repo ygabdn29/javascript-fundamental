@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.demo.handler.Utils;
 import com.example.demo.model.Employee;
-import com.example.demo.model.RegistrationDTO;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.model.dto.RegistrationDTO;
 
 @RestController
 @RequestMapping("api/account")
