@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.handler.Utils;
 import com.example.demo.model.Employee;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.model.dto.UserDto;
 import com.example.demo.model.dto.RegistrationDTO;
@@ -74,10 +74,10 @@ public class AccountRestController {
       String message = "Click the link to verify your email: \n" + confirmationUrl;
       emailService.sendEmail(employee.getEmail(), subject, message);
 
-      return Utils.generaResponseEntity(HttpStatus.OK,
+      return Utils.generateResponseEntity(HttpStatus.OK,
           "Registration Successful. A verification email has been sent to your email address.");
     } catch (Exception e) {
-      return Utils.generaResponseEntity(HttpStatus.OK,
+      return Utils.generateResponseEntity(HttpStatus.OK,
           "Registration Failed: " + e.getMessage());
     }
   }
@@ -89,11 +89,10 @@ public class AccountRestController {
       user.setIsVerified(true);
       user.setGuid(null);
       userService.save(user);
-      return Utils.generaResponseEntity(HttpStatus.OK, "Verification Account successfully");
+      return Utils.generateResponseEntity(HttpStatus.OK, "Verification Account successfully");
     }
-    return Utils.generaResponseEntity(HttpStatus.OK, "Verification Failed");
+    return Utils.generateResponseEntity(HttpStatus.OK, "Verification Failed");
   }
-
    
 //  Anggia
     @GetMapping("list")
@@ -117,8 +116,8 @@ public class AccountRestController {
     }
 
 //   reza
-    @GetMapping("password") //kirim email
-    public ResponseEntity<Object> sendEmailChangePassword(@RequestBody User user) { 
+  @GetMapping("password") //kirim email
+  public ResponseEntity<Object> sendEmailChangePassword(@RequestBody User user) { 
         User validUser = userService.authenticate(user.getUsername(), user.getPassword());
         if(validUser != null){
             String guid = UUID.randomUUID().toString();
@@ -133,10 +132,10 @@ public class AccountRestController {
         }
     }
 
-    @PostMapping("password/change/{guid}")
-    public ResponseEntity<Object> changePasswordGuid(@PathVariable String guid, @RequestHeader String recentPass, 
+  @PostMapping("password/change/{guid}")
+  public ResponseEntity<Object> changePasswordGuid(@PathVariable String guid, @RequestHeader String recentPass, 
                                                     @RequestHeader String newPass, @RequestHeader String confirmPass){
-        User user = userService.findByStringGuid(guid);
+        User user = userService.verifyUser(guid);
         User validatedUser = userService.validatePassword(user, recentPass, newPass, confirmPass);
         if(validatedUser == null){
             user.setGuid(null);
@@ -155,7 +154,7 @@ public class AccountRestController {
     User auntheticatedUser = userService.authenticate(userLogin.getUsername(), userLogin.getPassword());
 
     if(auntheticatedUser != null && !auntheticatedUser.getIsVerified()){
-      return Utils.generaResponseEntity(HttpStatus.OK, "Not Verified Yet!");
+      return Utils.generateResponseEntity(HttpStatus.OK, "Not Verified Yet!");
     }
 
     try{ 
@@ -173,11 +172,9 @@ public class AccountRestController {
     
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
-  
-
-    return Utils.generaResponseEntity(HttpStatus.OK, "Login Success!");
+    return Utils.generateResponseEntity(HttpStatus.OK, "Login Success!");
     } catch(Exception e){
-      return Utils.generaResponseEntity(HttpStatus.OK, "Credentials Doesn't Match Any Records!");
+      return Utils.generateResponseEntity(HttpStatus.OK, "Credentials Doesn't Match Any Records!");
     }
   }
 
@@ -189,34 +186,34 @@ public class AccountRestController {
   }
 
 // Aten
-    @PostMapping("findEmail")
-    public ResponseEntity<String> processForgotPassword(@RequestBody Employee employee) {
-        // Extract email from the request body
-        String email = employee.getEmail();
+  @PostMapping("findEmail")
+  public ResponseEntity<String> processForgotPassword(@RequestBody Employee employee) {
+    // Extract email from the request body
+    String email = employee.getEmail();
         
-        // Validate email parameter
-        if (email == null || email.trim().isEmpty()) {
-            return ResponseEntity.badRequest()
-                                 .body("Email parameter is missing or empty");
-        }
+    // Validate email parameter
+    if (email == null || email.trim().isEmpty()) {
+        return ResponseEntity.badRequest()
+                              .body("Email parameter is missing or empty");
+    }
 
-        // Find employee by email
-        Employee foundEmployee = employeeService.findByEmail(email);
+    // Find employee by email
+    Employee foundEmployee = employeeService.findByEmail(email);
 
-        // Check if the employee is found and return the ID
-        if (foundEmployee != null) {
-            return ResponseEntity.ok("Employee ID: " + foundEmployee.getId() + " Email: " + foundEmployee.getEmail());
+    // Check if the employee is found and return the ID
+    if (foundEmployee != null) {
+        return ResponseEntity.ok("Employee ID: " + foundEmployee.getId() + " Email: " + foundEmployee.getEmail());
             
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("Employee not found");
-        }
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                              .body("Employee not found");
+    }
 
 
     }
 
-    @PostMapping("validate-password")
-    public ResponseEntity<Object> validatePassword(@RequestBody String password) {
+  @PostMapping("validate-password")
+  public ResponseEntity<Object> validatePassword(@RequestBody String password) {
         if (userService.isValidPassword(password)) {
             return Utils.generateResponseEntity(HttpStatus.OK, "Password Valid");
         } else {
@@ -224,8 +221,8 @@ public class AccountRestController {
         }
     }
 
-    @PostMapping("reset-password")
-    public ResponseEntity<Object> processResetPassword(@RequestBody Map<String, String> request) {
+  @PostMapping("reset-password")
+  public ResponseEntity<Object> processResetPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String password = request.get("password");
 
