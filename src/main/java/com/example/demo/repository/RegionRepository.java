@@ -8,4 +8,3 @@ import com.example.demo.model.Region;
 @Repository
 public interface RegionRepository extends JpaRepository<Region, Integer> {
 }
-
