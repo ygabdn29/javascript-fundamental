@@ -95,8 +95,8 @@ public class AccountRestController {
   }
    
 //  Anggia
-    @GetMapping("list")
-    public ResponseEntity<Object> get(@RequestHeader("X-token-account-key") String token ){
+  @GetMapping("list")
+  public ResponseEntity<Object> get(@RequestHeader("X-token-account-key") String token ){
         if(token.equals("123456789")){
             List<User> users = userService.get();
             return Utils.generateResponseEntity(HttpStatus.OK, "Data has been retrieved", users);
@@ -104,8 +104,8 @@ public class AccountRestController {
         return Utils.generateResponseEntity(HttpStatus.BAD_REQUEST, "Data can't be accessed. Token is invalid");
     } 
 
-    @PostMapping("role/save")
-    public ResponseEntity<Object> save(@RequestHeader("X-token-account-key") String token, @RequestBody UserDto userDto){
+  @PostMapping("role/save")
+  public ResponseEntity<Object> save(@RequestHeader("X-token-account-key") String token, @RequestBody UserDto userDto){
         if(token.equals("123456789")){
             User user2 = userService.get(userDto.getEmployee_id());
             user2.setRole(roleService.get(userDto.getRole_id()));
