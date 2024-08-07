@@ -1,6 +1,9 @@
 package com.example.demo.service.implementation;
 
+
 import java.util.List;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,7 +19,6 @@ public class UserServiceImpl implements UserService {
   private UserRepository userRepository;
   @Autowired
   private PasswordEncoder passwordEncoder;
-
 
   @Override
   public List<User> get() {
@@ -42,7 +44,6 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(idInteger).isEmpty();
   }
 
-  //
   @Override
   public User authenticate(String username, String password) {
     User user = userRepository.findByUsername(username);
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
     public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
-        if (!user.getPassword().equals(recentPassword)) {
+        if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
             return null; // Recent password is incorrect
         }
         if (!newPassword.equals(confirmPassword)) {
@@ -62,4 +63,41 @@ public class UserServiceImpl implements UserService {
         }
         return user; // Passwords are valid
 }
+    @Override
+    public Boolean isValidPassword(String password) {
+      // cek panjang password
+      if (password.length() < 8) {
+          return false;
+      }
+
+      // huruf kapital
+      boolean hasUpper = false;
+      // huruf kecil
+      boolean hasLower = false;
+      // angka
+      boolean hasDigit = false;
+
+      // for loop untuk cek 
+      for (char c : password.toCharArray()) {
+          // cek jika c punya huruf kapital
+          if (Character.isUpperCase(c)) {
+              hasUpper = true;
+          // cek jika c punya huruf kecil
+          } else if (Character.isLowerCase(c)) {
+              hasLower = true;
+          // cek jika c punya angka
+          } else if (Character.isDigit(c)) {
+              hasDigit = true;
+          }
+
+          // cek apa bila c punya 3 syarat password
+          if (hasUpper && hasLower && hasDigit) {
+              // balikin true jika sudah sesuai
+              return true;
+          }
+      }
+
+      // false jika password tidak sesuai
+      return false;
+    }
 }

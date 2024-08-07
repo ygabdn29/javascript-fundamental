@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_m_region")
 public class Region {
@@ -22,7 +24,9 @@ public class Region {
   private String name;
 
   @OneToMany(mappedBy = "region")
+  @JsonIgnore
   List<Department> departments;
+ 
 
   public Region(Integer id, String name) {
     this.id = id;

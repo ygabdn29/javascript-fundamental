@@ -13,18 +13,17 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class AppSecurityConfig {
-    
-    // autentikasi
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-        throws Exception{
-            return authenticationConfiguration.getAuthenticationManager();
-    }
-    // Autorisasi
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            
+
+  // Authentication
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  // Authorization
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+      http  
             .csrf().disable()
             .authorizeRequests((auth) -> {
                 try {
@@ -56,10 +55,10 @@ public class AppSecurityConfig {
             return http.build();
     }
 
+  // tambahan library menggunakan BCrypt
+  @Bean
+  public PasswordEncoder passwordEncoder(){
+    return new BCryptPasswordEncoder();
+  }
 
-    // Library Bcrypt   
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }
