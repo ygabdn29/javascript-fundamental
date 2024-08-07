@@ -32,6 +32,7 @@ public class AppSecurityConfig {
                             .antMatchers("/account/**").permitAll()
                             .antMatchers("/account/welcome").authenticated()
                             .antMatchers("/account/find-email").permitAll()
+                            .antMatchers("/account/role").authenticated()
                             .anyRequest().permitAll()
                             .and()
                             .formLogin()
