@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.example.demo.handler.utils;
+import com.example.demo.handler.Utils;
 import com.example.demo.model.Employee;
 import com.example.demo.model.RegistrationDTO;
 import com.example.demo.model.Role;
@@ -61,10 +61,10 @@ public class AccountRestController {
       String message = "Click the link to verify your email: \n" + confirmationUrl;
       emailService.sendEmail(employee.getEmail(), subject, message);
 
-      return utils.generaResponseEntity(HttpStatus.OK,
+      return Utils.generaResponseEntity(HttpStatus.OK,
           "Registration Successful. A verification email has been sent to your email address.");
     } catch (Exception e) {
-      return utils.generaResponseEntity(HttpStatus.OK,
+      return Utils.generaResponseEntity(HttpStatus.OK,
           "Registration Failed: " + e.getMessage());
     }
   }
@@ -75,8 +75,8 @@ public class AccountRestController {
     if (user != null) {
       user.setGuid(null);
       userService.save(user);
-      return utils.generaResponseEntity(HttpStatus.OK, "Verification Account successfully");
+      return Utils.generaResponseEntity(HttpStatus.OK, "Verification Account successfully");
     }
-    return utils.generaResponseEntity(HttpStatus.OK, "Verification Failed");
+    return Utils.generaResponseEntity(HttpStatus.OK, "Verification Failed");
   }
 }
