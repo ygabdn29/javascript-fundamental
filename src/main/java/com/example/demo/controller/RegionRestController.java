@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.handler.utils;
+import com.example.demo.handler.Utils;
 import com.example.demo.model.Region;
 import com.example.demo.service.RegionService;
 
@@ -33,9 +33,9 @@ public class RegionRestController {
     public ResponseEntity<Object> index(@RequestHeader String token) {
         if(token.equals("test") ){
             List<Region> regions = regionService.get();
-            return utils.generateResponseEntity(HttpStatus.OK, "Data has been retrieved", regions);
+            return Utils.generateResponseEntity(HttpStatus.OK, "Data has been retrieved", regions);
         }
-        return utils.generateResponseEntity(HttpStatus.BAD_REQUEST, "Token is not valid");
+        return Utils.generateResponseEntity(HttpStatus.BAD_REQUEST, "Token is not valid");
     }
 
     @GetMapping("region/{id}")

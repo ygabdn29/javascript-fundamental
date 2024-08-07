@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class utils {
+public class Utils {
     public static ResponseEntity<Object> generateResponseEntity(HttpStatus httpStatus, String message){
         Map<String, Object> response = new HashMap<>();
         response.put("status", httpStatus);

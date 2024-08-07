@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.handler.utils;
+import com.example.demo.handler.Utils;
 import com.example.demo.model.User;
 import com.example.demo.service.EmailService;
 import com.example.demo.service.UserService;
@@ -41,10 +41,10 @@ public class AccountRestController {
             userService.save(validUser); //update ke db
             String linkEmailGuid = "http://localhost:8080/api/account/password/change/" + guid;
             emailService.sendEmail(validUser.getEmployee().getEmail(), "Change password", "Please click the link below to change your password\n" + linkEmailGuid);
-            return utils.generateResponseEntity(HttpStatus.OK, "We've sent you an email");
+            return Utils.generateResponseEntity(HttpStatus.OK, "We've sent you an email");
         }
         else{
-            return utils.generateResponseEntity(HttpStatus.OK, "Wrong username or password");
+            return Utils.generateResponseEntity(HttpStatus.OK, "Wrong username or password");
         }
     }
 
@@ -56,12 +56,12 @@ public class AccountRestController {
         if(validatedUser == null){
             user.setGuid(null);
             userService.save(user);
-            return utils.generateResponseEntity(HttpStatus.OK, "Invalid Password or Unmatch Password");
+            return Utils.generateResponseEntity(HttpStatus.OK, "Invalid Password or Unmatch Password");
         }
         validatedUser.setPassword(passwordEncoder.encode(newPass));
         validatedUser.setGuid(null);
         userService.save(validatedUser);
-        return utils.generateResponseEntity(HttpStatus.OK, "Password successfully has been changed");
+        return Utils.generateResponseEntity(HttpStatus.OK, "Password successfully has been changed");
     }
     
 }
