@@ -59,5 +59,15 @@ public class UserServiceImpl implements UserService {
             return null; // New password and confirm password do not match
         }
         return user; // Passwords are valid
-}
+  }
+
+  @Override
+  public User verifyUser(String guidString){
+    User user = userRepository.findByGuid(guidString);
+        if (user != null) {
+            user.setIsVerified(true);
+            return user;
+        }
+        return null;
+  }
 }

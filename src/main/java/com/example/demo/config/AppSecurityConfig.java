@@ -47,7 +47,6 @@ public class AppSecurityConfig {
                             .logoutSuccessUrl("/account/formlogin")
                             .permitAll();
                 } catch (Exception e) {
-                    // TODO: handle exception
                     throw new RuntimeErrorException(null);
                 }
               });

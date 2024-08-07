@@ -13,10 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_m_user")
-public class User{
+public class User {
   @Column(name = "password")
   private String password;
-
 
   @Column(name = "username")
   private String username;
@@ -25,11 +24,16 @@ public class User{
   @JoinColumn(name = "role_id", referencedColumnName = "id")
   private Role role;
 
-
   @Id
   @Column
   private Integer id;
-    
+
+  @Column
+  private Boolean isVerified;
+
+  @Column
+  private String guid;
+
   @OneToOne
   @MapsId
   private Employee employee;
@@ -37,9 +41,15 @@ public class User{
   public User() {
   }
 
-  public User(Role role, String password) {
-    this.role = role;
+  public User(String password, String username, Role role, Integer id, Boolean isVerified, String guid,
+      Employee employee) {
     this.password = password;
+    this.username = username;
+    this.role = role;
+    this.id = id;
+    this.isVerified = isVerified;
+    this.guid = guid;
+    this.employee = employee;
   }
 
   public String getPassword() {
@@ -50,36 +60,52 @@ public class User{
     this.password = password;
   }
 
-  public Role getRole() {
-      return role;
-  }
-
-  public void setRole(Role role) {
-      this.role = role;
-  }
-
-  public Employee getEmployee() {
-      return employee;
-  }
-
-  public void setEmployee(Employee employee) {
-      this.employee = employee;
-  }
-
-  public Integer getId() {
-      return id;
-  }
-
-  public void setId(Integer id) {
-      this.id = id;
-  }
-
   public String getUsername() {
-      return username;
+    return username;
   }
 
   public void setUsername(String username) {
-      this.username = username;
+    this.username = username;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public Boolean getIsVerified() {
+    return isVerified;
+  }
+
+  public void setIsVerified(Boolean isVerified) {
+    this.isVerified = isVerified;
+  }
+
+  public String getGuid() {
+    return guid;
+  }
+
+  public void setGuid(String guid) {
+    this.guid = guid;
+  }
+
+  public Employee getEmployee() {
+    return employee;
+  }
+
+  public void setEmployee(Employee employee) {
+    this.employee = employee;
   }
 
 }
