@@ -3,12 +3,10 @@ package com.example.demo.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +31,12 @@ public class User{
   @OneToOne
   @MapsId
   private Employee employee;
+
+  @Column
+  private Boolean isVerified;
+
+  @Column
+  private String guid;
 
   public User() {
   }
@@ -81,5 +85,23 @@ public class User{
   public void setUsername(String username) {
       this.username = username;
   }
+
+  public Boolean getIsVerified() {
+    return isVerified;
+  }
+
+  public void setIsVerified(Boolean isVerified) {
+    this.isVerified = isVerified;
+  }
+
+  public String getGuid() {
+    return guid;
+  }
+
+  public void setGuid(String guid) {
+    this.guid = guid;
+  }
+
+  
 
 }

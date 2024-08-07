@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,7 +73,6 @@ public class AccountController {
   }
 
   private static Collection<? extends GrantedAuthority> getAuthorities(String role){
-
     final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
     authorities.add(new SimpleGrantedAuthority(role));
     return authorities;
@@ -208,10 +206,4 @@ public class AccountController {
     return "redirect:/account/formlogin";
   } 
 
-
-  private static Collection<? extends GrantedAuthority> getAuthorities(String role) {
-    final List<SimpleGrantedAuthority> authorities = new LinkedList<>();
-    authorities.add(new SimpleGrantedAuthority(role));
-    return authorities;
-  }
 }

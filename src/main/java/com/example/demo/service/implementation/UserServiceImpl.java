@@ -17,9 +17,6 @@ public class UserServiceImpl implements UserService {
   @Autowired
   private PasswordEncoder passwordEncoder;
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   @Override
   public List<User> get() {
     return userRepository.findAll();
@@ -54,13 +51,20 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-    public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
-        if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
-            return null; // Recent password is incorrect
-        }
-        if (!newPassword.equals(confirmPassword)) {
-            return null; // New password and confirm password do not match
-        }
-        return user; // Passwords are valid
-}
+  public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
+      if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
+          return null; // Recent password is incorrect
+      }
+      if (!newPassword.equals(confirmPassword)) {
+          return null; // New password and confirm password do not match
+      }
+      return user; // Passwords are valid
+  }
+
+  @Override
+  public User findByStringGuid(String guidString){
+    User user = userRepository.findByGuid(guidString);
+    return user;
+  }
+  
 }
