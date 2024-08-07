@@ -11,7 +11,6 @@ import com.example.demo.service.EmailService;
 public class EmailServiceImpl implements EmailService{
     @Autowired
     private JavaMailSender mailSender;
-
     public void sendEmail(String toEmail, String subject, String body){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("reza.mahesa.azandi@gmail.com");
@@ -19,6 +18,5 @@ public class EmailServiceImpl implements EmailService{
         message.setText(body);
         message.setSubject(subject);        
         mailSender.send(message);
-    
     }
 }

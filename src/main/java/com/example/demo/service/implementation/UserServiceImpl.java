@@ -1,6 +1,9 @@
 package com.example.demo.service.implementation;
 
+
 import java.util.List;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,9 +65,51 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findByStringGuid(String guidString){
+  public User verifyUser(String guidString) {
     User user = userRepository.findByGuid(guidString);
-    return user;
+
+    if(user != null){
+      user.setIsVerified(true);
+      return user;
+    }
+    return null;
   }
-  
+
+    @Override
+    public Boolean isValidPassword(String password) {
+      // cek panjang password
+      if (password.length() < 8) {
+          return false;
+      }
+
+      // huruf kapital
+      boolean hasUpper = false;
+      // huruf kecil
+      boolean hasLower = false;
+      // angka
+      boolean hasDigit = false;
+
+      // for loop untuk cek 
+      for (char c : password.toCharArray()) {
+          // cek jika c punya huruf kapital
+          if (Character.isUpperCase(c)) {
+              hasUpper = true;
+          // cek jika c punya huruf kecil
+          } else if (Character.isLowerCase(c)) {
+              hasLower = true;
+          // cek jika c punya angka
+          } else if (Character.isDigit(c)) {
+              hasDigit = true;
+          }
+
+          // cek apa bila c punya 3 syarat password
+          if (hasUpper && hasLower && hasDigit) {
+              // balikin true jika sudah sesuai
+              return true;
+          }
+      }
+
+      // false jika password tidak sesuai
+      return false;
+    }
 }

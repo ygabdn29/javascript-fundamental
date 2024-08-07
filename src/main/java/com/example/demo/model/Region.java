@@ -26,6 +26,7 @@ public class Region {
   @OneToMany(mappedBy = "region")
   @JsonIgnore
   List<Department> departments;
+ 
 
   public Region(Integer id, String name) {
     this.id = id;
