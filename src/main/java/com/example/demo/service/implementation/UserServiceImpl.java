@@ -66,6 +66,19 @@ public class UserServiceImpl implements UserService {
         }
         return user; // Passwords are valid
 }
+
+
+  @Override
+  public User verifyUser(String guidString) {
+    User user = userRepository.findByGuid(guidString);
+
+    if(user != null){
+      user.setIsVerified(true);
+      return user;
+    }
+    return null;
+  }
+
     @Override
     public Boolean isValidPassword(String password) {
       // cek panjang password
@@ -103,4 +116,5 @@ public class UserServiceImpl implements UserService {
       // false jika password tidak sesuai
       return false;
     }
+
 }
