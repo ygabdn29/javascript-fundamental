@@ -27,7 +27,6 @@ public class UserServiceImpl implements UserService {
     return userRepository.findById(key).orElse(null);
   }
 
-
   @Override
   public Boolean save(User entity) {
     userRepository.save(entity);
@@ -51,13 +50,24 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-    public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
-        if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
-            return null; // Recent password is incorrect
-        }
-        if (!newPassword.equals(confirmPassword)) {
-            return null; // New password and confirm password do not match
-        }
-        return user; // Passwords are valid
-}
+  public User validatePassword(User user, String recentPassword, String newPassword, String confirmPassword) {
+    if (!passwordEncoder.matches(recentPassword, user.getPassword())) {
+      return null; // Recent password is incorrect
+    }
+    if (!newPassword.equals(confirmPassword)) {
+      return null; // New password and confirm password do not match
+    }
+    return user; // Passwords are valid
+  }
+
+  @Override
+  public User verifyUser(String guidString) {
+    User user = userRepository.findByGuid(guidString);
+    if (user != null) {
+      user.setIsVerified(true);
+      return user;
+    }
+
+    return null;
+  }
 }
