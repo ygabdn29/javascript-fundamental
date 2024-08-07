@@ -11,6 +11,8 @@ import javax.persistence.OneToOne;
 
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_m_user")
 public class User{
@@ -38,7 +40,11 @@ public class User{
     
   @OneToOne
   @MapsId
+  @JsonIgnore
   private Employee employee;
+
+  @Column
+  private String guid;
 
   public User() {
   }
