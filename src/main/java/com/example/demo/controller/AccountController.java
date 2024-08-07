@@ -28,6 +28,7 @@ import com.example.demo.service.EmployeeService;
 import com.example.demo.service.RoleService;
 import com.example.demo.service.UserService;
 
+
 @Controller
 @RequestMapping("account")
 public class AccountController {
@@ -214,4 +215,6 @@ public class AccountController {
     authorities.add(new SimpleGrantedAuthority(role));
     return authorities;
   }
+
+  
 }

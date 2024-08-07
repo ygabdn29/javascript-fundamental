@@ -44,13 +44,17 @@ public class AppSecurityConfig {
                             .logoutUrl("/account/logout")
                             .logoutSuccessUrl("/account/formlogin")
                             .permitAll();
+                            
+
                 } catch (Exception e) {
                     // TODO: handle exception
                     throw new RuntimeErrorException(null);
                 }
-              });
-      return http.build();
-  }
+           
+            });
+
+            return http.build();
+    }
 
   // tambahan library menggunakan BCrypt
   @Bean
