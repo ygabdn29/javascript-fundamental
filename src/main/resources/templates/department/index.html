@@ -199,6 +199,7 @@
         })
           .done((response) => {
             console.log(response);
+            alert("Data has been deleted!");
             $("#myTable").DataTable().ajax.reload();
           })
           .fail(() => console.log("ERROR!"));
@@ -224,6 +225,7 @@
         })
           .done((response) => {
             console.log(response);
+            $("#responsive-modal").modal("hide");
             document.getElementById("createForm").reset();
             $("#myTable").DataTable().ajax.reload();
           })
