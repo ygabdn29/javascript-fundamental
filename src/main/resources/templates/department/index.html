@@ -11,7 +11,7 @@
       rel="stylesheet"
       href="../assets/plugins/datatables/jquery.dataTables.min.css"
     />
-    <link href="css/style.css" rel="stylesheet" />
+    <link href="/css/style.css" rel="stylesheet" />
 
     <title>Department</title>
   </head>
@@ -27,8 +27,9 @@
       <table class="table table-bordered" id="myTable">
         <thead>
           <tr>
-            <td>Region ID</td>
-            <td>Name</td>
+            <td>Department ID</td>
+            <td>Department</td>
+            <td>Region</td>
             <td>Action</td>
           </tr>
         </thead>
@@ -57,27 +58,39 @@
             >
               ×
             </button>
-            <h4 class="modal-title">Create New Region</h4>
+            <h4 class="modal-title">Department</h4>
           </div>
           <div class="modal-body">
             <form id="createForm">
               <div class="form-group">
-                <label for="regionName" class="control-label"
-                  >Region Name:</label
+                <label for="departmentName" class="control-label"
+                  >Department Name:</label
                 >
                 <input
                   type="text"
                   class="form-control"
-                  id="regionName"
+                  id="departmentName"
                   name="name"
                 />
               </div>
+              <div class="form-group">
+                <label for="departmentRegion" class="control-label"
+                  >Region:</label
+                >
+                <select
+                  class="custom-select"
+                  aria-label="Default select example"
+                  id="departmentRegion"
+                  name="region"
+                ></select>
+              </div>
+
               <div class="form-group" hidden>
-                <label for="regionId" class="control-label">ID: </label>
+                <label for="departmentId" class="control-label">ID: </label>
                 <input
                   type="text"
                   class="form-control"
-                  id="regionId"
+                  id="departmentId"
                   name="id"
                   value=""
                 />
@@ -95,7 +108,7 @@
             <button
               type="button"
               class="btn btn-danger waves-effect waves-light"
-              onclick="create()"
+              onclick="save()"
             >
               Save changes
             </button>
@@ -109,5 +122,117 @@
     <script src="../assets/plugins/bootstrap/js/popper.min.js"></script>
     <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
+
+    <script>
+      $(document).ready(() => {
+        $("#myTable").DataTable({
+          ajax: {
+            url: "/api/departments",
+            type: "GET",
+            dataSrc: "data",
+          },
+          columnDefs: [
+            {
+              targets: [0],
+              visible: false,
+              searchable: false,
+            },
+            {
+              target: [3],
+              visible: false,
+              searchable: false,
+            },
+          ],
+          columns: [
+            {
+              data: "id",
+            },
+            {
+              data: "name",
+            },
+            {
+              data: "region.name",
+            },
+            {
+              render: (data, type, full, meta) => {
+                let html = "";
+                html += `
+                <a data-id=${full.id} data-toggle="modal" data-target="#responsive-modal" class="edit" onclick="edit(${full.id})"><i class="fa fa-pencil"></i></a>
+                <a onclick="remove(${full.id})"><i class="fa fa-trash-o"></i></a>`;
+                return html;
+              },
+            },
+          ],
+        });
+
+        function fetchRegion() {
+          let regionData = {};
+          $.ajax({
+            url: "/api/regions",
+            type: "GET",
+            headers: {
+              "x-access-token": "FGH-CVB-BNM",
+            },
+          })
+            .done((response) => {
+              regionData = response.data;
+
+              for (region in regionData) {
+                let optionValue = `<option value="${regionData[region]["id"]}">${regionData[region]["name"]}</option>`;
+                $("#departmentRegion").append(optionValue);
+              }
+            })
+            .fail(() => console.log("Error"));
+        }
+        fetchRegion();
+      });
+
+      function edit(id) {
+        let departmentId = id;
+        $(".modal-body").find("#departmentId").val(departmentId);
+      }
+
+      function remove(id) {
+        $.ajax({
+          url: `/api/department/${id}/delete`,
+          type: "DELETE",
+        })
+          .done((response) => {
+            console.log(response);
+            $("#myTable").DataTable().ajax.reload();
+          })
+          .fail(() => console.log("ERROR!"));
+      }
+
+      function save() {
+        // let region = {
+        //   name: "Test Region 2",
+        // };
+        let form = document.getElementById("createForm");
+        let formData = new FormData(form);
+        let departmentData = {
+          id: formData.get("id"),
+          name: formData.get("name"),
+          regionId: formData.get("region"),
+        };
+
+        $.ajax({
+          url: "/api/department/save",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(departmentData),
+        })
+          .done((response) => {
+            console.log(response);
+            document.getElementById("createForm").reset();
+            $("#myTable").DataTable().ajax.reload();
+          })
+          .fail(() => console.log("ERROR!"));
+      }
+
+      $("#responsive-modal").on("hidden.bs.modal", function () {
+        $(this).find("form").trigger("reset");
+      });
+    </script>
   </body>
 </html>

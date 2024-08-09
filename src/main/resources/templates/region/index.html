@@ -57,7 +57,7 @@
             >
               ×
             </button>
-            <h4 class="modal-title">Create New Region</h4>
+            <h4 class="modal-title">Region</h4>
           </div>
           <div class="modal-body">
             <form id="createForm">
@@ -198,6 +198,10 @@
           })
           .fail(() => console.log("ERROR!"));
       }
+
+      $("#responsive-modal").on("hidden.bs.modal", function () {
+        $(this).find("form").trigger("reset");
+      });
     </script>
   </body>
 </html>
