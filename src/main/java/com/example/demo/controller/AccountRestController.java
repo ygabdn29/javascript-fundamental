@@ -138,8 +138,6 @@ public class AccountRestController {
         User user = userService.verifyUser(guid);
         User validatedUser = userService.validatePassword(user, recentPass, newPass, confirmPass);
         if(validatedUser == null){
-            user.setGuid(null);
-            userService.save(user);
             return Utils.generateResponseEntity(HttpStatus.OK, "Invalid Password or Unmatch Password");
         }
         validatedUser.setPassword(passwordEncoder.encode(newPass));

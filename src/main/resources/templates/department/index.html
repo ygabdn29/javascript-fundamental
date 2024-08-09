@@ -13,7 +13,7 @@
     />
     <link href="css/style.css" rel="stylesheet" />
 
-    <title>Region</title>
+    <title>Department</title>
   </head>
   <body>
     <div class="container">
@@ -109,95 +109,5 @@
     <script src="../assets/plugins/bootstrap/js/popper.min.js"></script>
     <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
-
-    <script>
-      $(document).ready(() => {
-        $("#myTable").DataTable({
-          ajax: {
-            url: "/api/regions",
-            type: "GET",
-            headers: {
-              "x-access-token": "FGH-CVB-BNM",
-            },
-            // kalo masih standar kasih "" aja
-            dataSrc: "data",
-          },
-          // mendefinisikan kolum yang dipunya
-          // searchabale, target, orderable
-          columnDefs: [
-            {
-              targets: [0],
-              visible: false,
-              searchable: false,
-            },
-            {
-              targets: [2],
-              searchable: false,
-              orderable: false,
-            },
-          ],
-          columns: [
-            {
-              data: "id",
-            },
-            {
-              data: "name",
-            },
-            {
-              render: (data, type, full, meta) => {
-                let html = "";
-                html += `
-                <a data-id=${full.id} data-toggle="modal" data-target="#responsive-modal" class="edit" onclick="edit(${full.id})"><i class="fa fa-pencil"></i></a>
-                <a onclick="remove(${full.id})"><i class="fa fa-trash-o"></i></a>`;
-                return html;
-              },
-            },
-          ],
-        });
-      });
-
-      function edit(id) {
-        let regionId = id;
-        $(".modal-body").find("#regionId").val(regionId);
-      }
-
-      function remove(id) {
-        $.ajax({
-          url: `/api/region/${id}/delete`,
-          type: "DELETE",
-        })
-          .done((response) => {
-            console.log(response);
-            $("#myTable").DataTable().ajax.reload();
-          })
-          .fail(() => console.log("ERROR!"));
-      }
-
-      function create() {
-        // let region = {
-        //   name: "Test Region 2",
-        // };
-        let form = document.getElementById("createForm");
-        let formData = new FormData(form);
-        let regionData = {
-          id: formData.get("id"),
-          name: formData.get("name"),
-        };
-
-        $.ajax({
-          url: "/api/region/save",
-          type: "POST",
-          contentType: "application/json",
-          headers: { "x-access-token": "FGH-CVB-BNM" },
-          data: JSON.stringify(regionData),
-        })
-          .done((response) => {
-            console.log(response);
-            document.getElementById("createForm").reset();
-            $("#myTable").DataTable().ajax.reload();
-          })
-          .fail(() => console.log("ERROR!"));
-      }
-    </script>
   </body>
 </html>
